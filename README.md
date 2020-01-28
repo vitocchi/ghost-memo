@@ -17,7 +17,7 @@ After clone this repository, isntall the project dependencies:
 npm install
 ```
 
-Copy .env.example to .env, and change BUILD_CONTRACTS_PATH to `thisrepository/build/enigma_contracts`
+Copy .env.example to .env, and change `BUILD_CONTRACTS_PATH` 
 
 start enigma discovery:
 
