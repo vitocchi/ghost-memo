@@ -1,9 +1,9 @@
 import React, {Component} from "react"
 import connect from "react-redux/es/connect/connect";
-import Notifier from "./Notifier";
 import { Field , reduxForm} from "redux-form";
 import Id from "./Id";
 import Pass from "./Pass";
+import {openSnackbar} from "./Notifier";
 import { signIn, setMemo } from '../actions';
 import { Button, Grid, CircularProgress } from "@material-ui/core";
 
@@ -23,13 +23,19 @@ class SignIn extends Component {
             [id, 'string'],
             [pass, 'string'],
         ];
-        let task = await this.props.enigma.computeTask(taskFn, taskArgs);
-        let memo = this.props.enigma.enigma.web3.eth.abi.decodeParameter('string', task.decryptedOutput);
-        console.log(memo);
-        console.log(parseInt(task.decryptedOutput, 16));
-        this.setState({loading: false});
-        this.props.signIn({id: id, pass: pass});
-        this.props.setMemo(memo);
+        this.props.enigma.computeTask(taskFn, taskArgs)
+            .then((output) => {
+                let memo = this.props.enigma.enigma.web3.eth.abi.decodeParameter('string', output);
+                this.props.signIn({ id: id, pass: pass });
+                this.props.setMemo(memo);
+                openSnackbar({message: 'signin successed'})
+            })
+            .catch((e) => {
+                openSnackbar({message: 'signin failed'})
+            })
+            .finally(() => {
+                this.setState({ loading: false });
+            });
     }
     render() {
         let button;
@@ -51,7 +57,6 @@ class SignIn extends Component {
         }
         return (
             <form>
-                <Notifier />
                 <Grid item xs
                     style={{ padding: "1rem" }}
                 >

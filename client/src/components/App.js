@@ -14,6 +14,7 @@ import "../App.css";
 // Imports - Actions (Redux)
 import { initializeEnigma } from '../actions';
 import EnigmaClient from "../utils/EnigmaClient.js";
+import Notifier from "./Notifier.js";
 
 const styles = theme => ({
     root: {
@@ -54,6 +55,7 @@ class App extends Component {
         return (
             <div className="App">
                 <Header />
+                <Notifier/>
                 <Container style={{ marginTop: "1rem" }}>
                     {body}
                 </Container>

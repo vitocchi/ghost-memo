@@ -5,7 +5,7 @@ import connect from "react-redux/es/connect/connect";
 // Imports - Frameworks (Material-UI)
 import Snackbar from "@material-ui/core/Snackbar";
 // Imports - Actions (Redux)
-import { notifyMessage} from "../actions";
+import { notifyMessage } from "../actions";
 
 let openSnackbarFn;
 

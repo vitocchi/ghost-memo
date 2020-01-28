@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import connect from "react-redux/es/connect/connect";
+import openSnackbar from "./Notifier";
 import { setMemo } from '../actions';
 import { Paper, Button, CircularProgress, Grid, InputBase } from '@material-ui/core';
 
@@ -14,13 +15,18 @@ class Memo extends Component {
     async saveMemo() {
         this.setState({loading: true});
         const taskFn = 'save_memo(string, string, string)';
-        const taskArg = [
+        const taskArgs = [
             [this.props.account.id, 'string'],
             [this.props.account.pass, 'string'],
             [this.props.memo, 'string'],
         ]
-        await this.props.enigma.computeTask(taskFn, taskArg);
-        this.setState({loading: false});
+        this.props.enigma.computeTask(taskFn, taskArgs)
+            .catch((e) => {
+                openSnackbar({ message: e.message })
+            })
+            .finally(() => {
+                this.setState({loading: false});
+            });
     }
     render() {
         let memo

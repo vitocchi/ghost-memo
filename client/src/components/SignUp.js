@@ -1,6 +1,6 @@
 import React, {Component} from "react"
 import connect from "react-redux/es/connect/connect";
-import Notifier, {openSnackbar} from "./Notifier";
+import {openSnackbar} from "./Notifier";
 import { Field , reduxForm} from "redux-form";
 import Id from "./Id";
 import Pass from "./Pass";
@@ -23,14 +23,21 @@ class SignUp extends Component {
             [id, 'string'],
             [pass, 'string'],
         ];
-        let task = await this.props.enigma.computeTask(taskFn, taskArgs);
-        if (parseInt(task.decryptedOutput, 16) === 1) {
-            openSnackbar({ message: 'Task succeeded: signup success' })
-        } else {
-            openSnackbar({ message: 'Task succeeded: signup failed' })
-        }
-        this.setState({loading: false});
-        this.props.signIn({id: id, pass: pass});
+        this.props.enigma.computeTask(taskFn, taskArgs)
+            .then((output) => {
+                if (parseInt(output, 16) === 1) {
+                    openSnackbar({message: 'signup successed'})
+                    this.props.signIn({id: id, pass: pass});
+                } else {
+                    openSnackbar({message: 'signup failed'})
+                }
+            })
+            .catch((e) => {
+                openSnackbar({message: e.message})
+            })
+            .finally(() => {
+                this.setState({loading: false});
+            });
     }
     render() {
         let button;
@@ -52,7 +59,6 @@ class SignUp extends Component {
         }
         return (
             <form> 
-                <Notifier />
                 <Grid item xs
                     style={{ padding: "1rem" }}
                 >
