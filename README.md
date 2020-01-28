@@ -43,6 +43,7 @@ discovery test
 
 ```
 cd client
+ln -s ../build src/build
 npm install
 npm run start
 ```
