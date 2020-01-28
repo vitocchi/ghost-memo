@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import connect from "react-redux/es/connect/connect";
-import openSnackbar from "./Notifier";
+import {openSnackbar} from "./Notifier";
 import { setMemo } from '../actions';
 import { Paper, Button, CircularProgress, Grid, InputBase } from '@material-ui/core';
 
@@ -21,6 +21,9 @@ class Memo extends Component {
             [this.props.memo, 'string'],
         ]
         this.props.enigma.computeTask(taskFn, taskArgs)
+            .then(() => {
+                openSnackbar({ message: 'memo stored'})
+            })
             .catch((e) => {
                 openSnackbar({ message: e.message })
             })
@@ -37,48 +40,38 @@ class Memo extends Component {
         } else {
             memo = (
                 <>
-                    <Grid container spacing={3}>
-                        <Grid item xs={3}>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Grid container spacing={3}>
-                                    <Grid item xs={12}
-                                        style={{ padding: "1rem" }}
-                                    >
-                                        <Paper
-                                            style={{
-                                                padding: "1rem",
-                                                textAlign: "left"
-                                            }}
-                                        >
-                                            <InputBase
-                                                type="textarea"
-                                                value={this.props.memo}
-                                                multiline
-                                                fullWidth
-                                                rows={20}
-                                                onChange={e => this.props.setMemo(e.target.value)}/>
-                                        </Paper>
-                                    </Grid>
-                                    <Grid item xs={12}
-                                        style={{ padding: "1rem" }}
-                                    >
-                                        <Button
-                                            onClick={ e => {
-                                                e.preventDefault()
-                                                this.saveMemo()
-                                            }}
-                                            variant="contained"
-                                            type="submit"
-                                            color="primary"
-                                        >
-                                            STORE
-                                        </Button>
-                                    </Grid>
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={3}>
-                        </Grid>
+                    <Grid item xs={12}
+                        style={{ padding: "1rem" }}
+                    >
+                        <Paper
+                            style={{
+                                padding: "1rem",
+                                textAlign: "left"
+                            }}
+                        >
+                            <InputBase
+                                type="textarea"
+                                value={this.props.memo}
+                                multiline
+                                fullWidth
+                                rows={20}
+                                onChange={e => this.props.setMemo(e.target.value)}/>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12}
+                        style={{ padding: "1rem" }}
+                    >
+                        <Button
+                            onClick={ e => {
+                                e.preventDefault()
+                                this.saveMemo()
+                            }}
+                            variant="contained"
+                            type="submit"
+                            color="primary"
+                        >
+                            STORE
+                        </Button>
                     </Grid>
                 </>
             );

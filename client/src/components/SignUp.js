@@ -5,7 +5,7 @@ import { Field , reduxForm} from "redux-form";
 import Id from "./Id";
 import Pass from "./Pass";
 import { signIn } from '../actions';
-import { Button, Grid, CircularProgress } from "@material-ui/core";
+import { Button, Grid, CircularProgress, Paper } from "@material-ui/core";
 
 class SignUp extends Component {
     constructor(props) {
@@ -58,35 +58,37 @@ class SignUp extends Component {
             );
         }
         return (
-            <form> 
-                <Grid item xs
-                    style={{ padding: "1rem" }}
-                >
-                    <Field
-                        name="id"
-                        component={Id}
-                        props={{
-                            id: "signup_id"
-                        }}
-                    />
-                </Grid>
-                <Grid item xs
-                    style={{ padding: "1rem" }}
-                >
-                    <Field
-                        name="pass"
-                        component={Pass}
-                        props={{
-                            id: "signup_pass"
-                        }}
-                    />
-                </Grid>
-                <Grid item xs
-                    style={{ padding: "1rem" }}
-                >
-                    {button}
-                </Grid>
-            </form>
+            <Paper>
+                <form> 
+                    <Grid item xs
+                        style={{ padding: "1rem" }}
+                    >
+                        <Field
+                            name="id"
+                            component={Id}
+                            props={{
+                                id: "signup_id"
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs
+                        style={{ padding: "1rem" }}
+                    >
+                        <Field
+                            name="pass"
+                            component={Pass}
+                            props={{
+                                id: "signup_pass"
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs
+                        style={{ padding: "1rem" }}
+                    >
+                        {button}
+                    </Grid>
+                </form>
+            </Paper>
         );
     }
 }
