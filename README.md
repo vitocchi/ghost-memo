@@ -1,18 +1,14 @@
 # ghost-memo
 memo DApp sample using ghost module
 
-## Install
-
-### Rust
+## Rust
 https://doc.rust-lang.org/book/ch01-01-installation.html
 
-### Enigma discovery-cli
+## Enigma discovery-cli
 
 I recommend Node.js v10.16.0.
 
 `npm install -g @enigmampc/discovery-cli`
-
-## Start Discovery 
 
 After clone this repository, isntall the project dependencies:
 
