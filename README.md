@@ -1,7 +1,8 @@
 # ghost-memo
-memo DApp sample using ghost module
+memo DApp sample of [ghost](https://github.com/vitocchi/ghost)
 
 ## Rust
+
 https://doc.rust-lang.org/book/ch01-01-installation.html
 
 ## Enigma discovery-cli
