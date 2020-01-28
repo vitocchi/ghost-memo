@@ -123,4 +123,35 @@ contract("GhostMemo", accounts => {
     task = await enigma.decryptTaskResult(task);
     expect(enigma.web3.eth.abi.decodeParameter('string', task.decryptedOutput)).to.equal('memo');
   });
+
+  it('should execute get_all_ids task', async () => {
+    let taskFn = 'get_all_ids()';
+    let taskArgs = [
+    ];
+    let taskGasLimit = 1000000;
+    let taskGasPx = utils.toGrains(1);
+    const contractAddr = fs.readFileSync('test/ghost_memo.txt', 'utf-8');
+    task = await new Promise((resolve, reject) => {
+      enigma.computeTask(taskFn, taskArgs, taskGasLimit, taskGasPx, accounts[0], contractAddr)
+        .on(eeConstants.SEND_TASK_INPUT_RESULT, (result) => resolve(result))
+        .on(eeConstants.ERROR, (error) => reject(error));
+    });
+    task = await enigma.getTaskRecordStatus(task);
+    expect(task.ethStatus).to.equal(1);
+    do {
+      await sleep(1000);
+      task = await enigma.getTaskRecordStatus(task);
+      process.stdout.write('Waiting. Current Task Status is '+task.ethStatus+'\r');
+    } while (task.ethStatus != 2);
+    expect(task.ethStatus).to.equal(2);
+    task = await new Promise((resolve, reject) => {
+      enigma.getTaskResult(task)
+        .on(eeConstants.GET_TASK_RESULT_RESULT, (result) => resolve(result))
+        .on(eeConstants.ERROR, (error) => reject(error));
+    });
+    expect(task.engStatus).to.equal('SUCCESS');
+    task = await enigma.decryptTaskResult(task);
+    task = await enigma.decryptTaskResult(task);
+    expect(enigma.web3.eth.abi.decodeParameter('string', task.decryptedOutput)).to.equal('id');
+  });
 })

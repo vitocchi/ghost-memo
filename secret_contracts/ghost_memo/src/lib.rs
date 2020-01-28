@@ -20,6 +20,7 @@ pub trait ContractInterface {
     fn registor(id: String, pass: String) -> bool;
     fn get_memo(id: String, pass: String) -> String;
     fn save_memo(id: String, pass: String, memo: String);
+    fn get_all_ids() -> String;
 }
 
 // Implementation of the public-facing secret contract functions defined in the ContractInterface
@@ -53,5 +54,18 @@ impl ContractInterface for Contract {
             memos.insert(id, memo);
         }
         write_state!(MEMO => memos);
+    }
+
+    fn get_all_ids() -> String {
+        let mut concatenated_ids: String = String::new();
+        let ids = Ghost::new().get_all_ids();
+        let separator = String::from("|");
+        for id in ids {
+            concatenated_ids.push_str(&id);
+            concatenated_ids.push_str(&separator);
+        }
+        // remove last separator
+        concatenated_ids.pop();
+        return concatenated_ids;
     }
 }
